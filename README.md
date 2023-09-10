@@ -35,14 +35,14 @@ Registers a new user.
     "password": "password123"
 }
 ```
-####Response
+#### Response
 ```
 {
     "message": "User saved successfully"
 }
 ```
 
-####POST /login
+#### POST /login
 Authenticates a user.
 ```
 Request
@@ -52,14 +52,14 @@ Request
 }
 ```
 
-####Response
+#### Response
 ```
 {
     "message": "Hello John Doe, Authenticated successfully"
 }
 ```
-####Built With
-Express.js - The web framework used
-MongoDB - The database used
-Mongoose - MongoDB object modeling tool
-bcrypt - Password hashing function
+#### Built With
+Express.js - The web framework used    
+MongoDB - The database used    
+Mongoose - MongoDB object modeling tool    
+bcrypt - Password hashing function    
