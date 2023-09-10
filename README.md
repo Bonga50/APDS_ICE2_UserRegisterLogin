@@ -51,7 +51,6 @@ Request
     "password": "password123"
 }
 ```
-
 #### Response
 ```
 {
