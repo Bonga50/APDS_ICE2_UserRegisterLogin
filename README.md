@@ -62,3 +62,7 @@ Express.js - The web framework used
 MongoDB - The database used    
 Mongoose - MongoDB object modeling tool    
 bcrypt - Password hashing function    
+
+#### Video
+Feel free to watch video, https://youtu.be/TzDaxqF-zYo , Dont judge im still beginner.
+
