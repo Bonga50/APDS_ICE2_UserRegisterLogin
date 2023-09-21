@@ -57,6 +57,8 @@ Request
     "message": "Hello John Doe, Authenticated successfully"
 }
 ```
+#### Copy session token
+Once you login, get the session token from the console. Go to postmon and paste the token under Authorization , on the Type select Bearer Token and paste the token in the field.
 #### Built With
 Express.js - The web framework used    
 MongoDB - The database used    
