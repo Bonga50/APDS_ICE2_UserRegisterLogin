@@ -3,11 +3,17 @@ const mongodb = require('mongodb')
 const User = require('./Models/UserModels');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
+const corsOpt={
+    origin:'*',
+    optionsSucessStatus: 200
+}
 
 const connstring = 'mongodb+srv://Admin:LV0mHpYmKtHTajGR@cluster0.fw6znqm.mongodb.net/';
 const MongoClient = mongodb.MongoClient;
 
 const app = express();
+app.use(cors(corsOpt));
 
 const saltRound = 10;
 
@@ -17,7 +23,7 @@ mongoose.connect(connstring, { useNewUrlParser: true, useUnifiedTopology: true }
 
         app.use(express.json());
 
-        app.post('/register', (req, res) => {
+        app.post('/register',cors(corsOpt), (req, res) => {
             bcrypt.hash(req.body.password, saltRound)
             .then((hash) => {
                 const user = new User({
@@ -30,13 +36,8 @@ mongoose.connect(connstring, { useNewUrlParser: true, useUnifiedTopology: true }
                 user.save()
                 .then((result) => {
                     res.status(200).json({message:'User saved successfully'})
-                    .catch((error) => {
-                        res.status(error.code).json({error: error.message})})
-                    }
-                    )
-                }
-                ).catch(
-                    (error) => {res.status(error.code).json({error: 'Failed to save'})
+                }).catch(
+                    (error) => {res.status(500).json({error: 'Failed to save'})
                 })
             });
             
@@ -66,6 +67,7 @@ mongoose.connect(connstring, { useNewUrlParser: true, useUnifiedTopology: true }
             })
 
     })
+})
     .catch(error => {
         console.error("Error connecting to MongoDB:", error);
        });
