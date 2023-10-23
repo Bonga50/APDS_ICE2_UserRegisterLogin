@@ -3,11 +3,16 @@ const mongodb = require('mongodb')
 const User = require('./Models/UserModels');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const cors = require('cors');
 const corsOpt={
     origin:'*',
     optionsSucessStatus: 200
 }
+
+const jwt = require('jsonwebtoken');
+const isAuthenticated = require('./Models/Authorized');
+
 
 const connstring = 'mongodb+srv://Admin:LV0mHpYmKtHTajGR@cluster0.fw6znqm.mongodb.net/';
 const MongoClient = mongodb.MongoClient;
@@ -40,6 +45,27 @@ mongoose.connect(connstring, { useNewUrlParser: true, useUnifiedTopology: true }
                     (error) => {res.status(500).json({error: 'Failed to save'})
                 })
             });
+
+            app.get('/viewusers',isAuthenticated, (req, res) => {
+                User.find()
+                .then((newUser) => {
+                    if (newUser.length === 0) {
+                        // Handle the case where no tasks were found
+                        return res.status(404).json({ message: 'No Users found' });
+                    }
+        
+                    res.json({
+                        message: 'Users found',
+                        newUser: newUser
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                    res.status(500).json({ error: 'Internal Server Error' });
+                });  
+
+            });
+            
             
             app.post('/login', (req,res) =>
             {
@@ -51,6 +77,8 @@ mongoose.connect(connstring, { useNewUrlParser: true, useUnifiedTopology: true }
                     }
                     bcrypt.compare(password, user.password)
                     .then(match => {
+                        const token = jwt.sign({username: user.username,userid: user.id}
+                            ,'ThisWillBeTheStringWeUseForAuthentication',{expiresIn: '2h'});
                         if (match) {
                             res.status(200).json({ message: 'Hello '+user.name+' '+user.surname+', Authenticated successfully' });
                         } else {
